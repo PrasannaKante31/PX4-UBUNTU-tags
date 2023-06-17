@@ -5,13 +5,7 @@ pipeline {
   stages {
 
     stage('Analysis') {
-      when {
-        anyOf {
-          branch 'main'
-          branch 'master' // should be removed, but in case there is something going on...
-          branch 'pr-jenkins' // for testing
-        }
-      }
+      
       parallel {
 
         stage('Airframe') {
@@ -178,13 +172,7 @@ pipeline {
               sh('rm -rf PX4-user_guide')
             }
           }
-          when {
-            anyOf {
-              branch 'main'
-              branch 'master' // should be removed, but in case there is something going on...
-              branch 'pr-jenkins' // for testing
-            }
-          }
+          
           options {
             skipDefaultCheckout()
           }
@@ -207,13 +195,7 @@ pipeline {
               sh('rm -rf qgroundcontrol')
             }
           }
-          when {
-            anyOf {
-              branch 'main'
-              branch 'master' // should be removed, but in case there is something going on...
-              branch 'pr-jenkins' // for testing
-            }
-          }
+          
           options {
             skipDefaultCheckout()
           }
@@ -236,11 +218,7 @@ pipeline {
               sh('rm -rf px4_msgs')
             }
           }
-          when {
-            anyOf {
-              branch 'main'
-            }
-          }
+          
         }
 
         stage('S3') {
@@ -258,13 +236,7 @@ pipeline {
               s3Upload(acl: 'PublicRead', bucket: 'px4-travis', file: 'parameters.json.xz', path: 'Firmware/master/')
             }
           }
-          when {
-            anyOf {
-              branch 'main'
-              branch 'master' // should be removed, but in case there is something going on...
-              branch 'pr-jenkins' // for testing
-            }
-          }
+          
           options {
             skipDefaultCheckout()
           }
