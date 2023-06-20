@@ -14,7 +14,7 @@ pipeline {
           }
           steps {
            // sh 'make distclean; git clean -ff -x -d .'
-            sh 'git fetch --all --tags upstream'
+            sh 'git fetch --tags upstream'
             sh 'git push --tags'
             sh 'make airframe_metadata'
             dir('build/px4_sitl_default/docs') {
