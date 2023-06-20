@@ -13,7 +13,7 @@ pipeline {
             docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
           }
           steps {
-            sh 'make distclean; git clean -ff -x -d .'
+           // sh 'make distclean; git clean -ff -x -d .'
             sh 'git fetch --all --tags'
             sh 'make airframe_metadata'
             dir('build/px4_sitl_default/docs') {
@@ -21,11 +21,11 @@ pipeline {
               stash includes: 'airframes.md, airframes.xml', name: 'metadata_airframes'
             }
           }
-          post {
-            always {
-              sh 'make distclean; git clean -ff -x -d .'
-            }
-          }
+      //
+        //    always {
+          //    sh 'make distclean; git clean -ff -x -d .'
+           // }
+         // }
         }
 
         // stage('Parameter') {
