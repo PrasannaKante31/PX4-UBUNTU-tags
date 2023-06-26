@@ -326,7 +326,8 @@ pipeline {
                 }
               }*/ //try this
               steps {
-                checkoutSCM()
+ //               checkoutSCM()
+		sh'git clone https://github.com/PrasannaKante31/PX4-UBUNTU.git'
                 sh 'make px4_fmu-v5_debug'
                 sh 'make px4_fmu-v5_debug bootloader_elf'
                 sh 'ccache -s'
