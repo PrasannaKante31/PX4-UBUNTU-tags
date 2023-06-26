@@ -327,8 +327,9 @@ pipeline {
               }*/ //try this
               steps {
  //               checkoutSCM()
-		sh'git clone https://github.com/PrasannaKante31/PX4-UBUNTU.git'
-		sh'''cd PX4-UBUNTU
+		sh'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
+		sh'''cd PX4-UBUNTU-tags
+		git fetch --tags https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
                 ccache -s'''
