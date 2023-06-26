@@ -328,16 +328,16 @@ pipeline {
               steps {
  //               checkoutSCM()
 		sh'git clone https://github.com/PrasannaKante31/PX4-UBUNTU.git'
-                sh 'make px4_fmu-v5_debug'
-                sh 'make px4_fmu-v5_debug bootloader_elf'
-                sh 'ccache -s'
+		sh'''cd PX4-UBUNTU
+                make px4_fmu-v5_debug
+                make px4_fmu-v5_debug bootloader_elf
+                ccache -s'''
                 stash includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
               }
               post{
 		always{
                 script{sh'''pwd
-ls
-		     cd PX4-Actual
+		     cd PX4-UBUNTU
 		     make distclean
 		  '''  
 		}
