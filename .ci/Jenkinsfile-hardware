@@ -329,7 +329,7 @@ pipeline {
  //               checkoutSCM()
 		sh'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
 		sh'''cd PX4-UBUNTU-tags
-		git fetch --tags https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git
+		git fetch --tags https://github.com/PX4/PX4-Autopilot.git
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
                 ccache -s'''
