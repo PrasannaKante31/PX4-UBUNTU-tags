@@ -333,12 +333,11 @@ pipeline {
                 sh 'ccache -s'
                 stash includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
               }
-              post {
+              post{
                 sh'''pwd
 		     cd PX4-Actual
 		     make distclean
-		  '''   
-                
+		  '''  
               }
             } // stage build
             // stage("hardware") {
