@@ -336,6 +336,7 @@ pipeline {
               post{
 		always{
                 script{sh'''pwd
+ls
 		     cd PX4-Actual
 		     make distclean
 		  '''  
