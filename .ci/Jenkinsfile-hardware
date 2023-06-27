@@ -338,7 +338,7 @@ pipeline {
               post{
 		always{
                 script{sh'''pwd
-		     cd PX4-UBUNTU
+		     cd PX4-UBUNTU-tags
 		     make distclean
 		  '''  
 		}
