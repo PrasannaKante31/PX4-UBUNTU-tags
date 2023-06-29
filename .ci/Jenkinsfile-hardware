@@ -328,12 +328,12 @@ pipeline {
               steps {
  //               checkoutSCM()
 		sh'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
-		sh'''sudo chmod 777 PX4-UBUNTU-tags
+		sh'''
 		cd PX4-UBUNTU-tags
 		git fetch --tags https://github.com/PX4/PX4-Autopilot.git
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
-                ccache -s'''
+                ccache -s -v'''
                 stash includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
               }
               post{
