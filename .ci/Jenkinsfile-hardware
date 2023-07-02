@@ -335,7 +335,7 @@ pipeline {
                 make px4_fmu-v5_debug bootloader_elf
                 ccache -s -v'''
 		
-                stash allowEmpty: true, includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
+                //stash allowEmpty: true, includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
               }
               post{
 		always{
