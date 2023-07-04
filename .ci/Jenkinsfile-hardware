@@ -602,7 +602,7 @@ pipeline {
     } // stage Hardware Test
   } // stages
   environment {
-    CCACHE_DIR = '/usr/lib/ccache'
+    CCACHE_DIR = '/tmp/ccache'
     CCACHE_NOHASHDIR = 1
     CI = true
   }
@@ -615,12 +615,12 @@ pipeline {
 
 void checkoutSCM() {
   retry(3) {
-    sh 'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'	
+   // sh 'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'	
     sh 'cd ~'
     sh 'cd PX4-UBUNTU-tags'
     sh 'export'
    // sh 'make distclean; git clean -ff -x -d .'
-    sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
+   // sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
     sh 'ccache -z'
   }
 }
