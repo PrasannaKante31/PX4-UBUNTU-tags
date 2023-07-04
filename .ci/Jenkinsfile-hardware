@@ -326,16 +326,15 @@ pipeline {
                 }
               }*/ //try this
               steps {
- //               checkoutSCM()
-		sh'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
+              checkoutSCM()
+		
 		sh'''
-		cd PX4-UBUNTU-tags
+		
 		git fetch --tags https://github.com/PX4/PX4-Autopilot.git
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
                 ccache -s -v'''
-		
-                //stash allowEmpty: true, includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
+                stash includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
               }
               post{
 		always{
@@ -603,7 +602,7 @@ pipeline {
     } // stage Hardware Test
   } // stages
   environment {
-    CCACHE_DIR = '/usr/bin/ccache'
+    CCACHE_DIR = '/usr/lib/ccache'
     CCACHE_NOHASHDIR = 1
     CI = true
   }
@@ -616,7 +615,8 @@ pipeline {
 
 void checkoutSCM() {
   retry(3) {
-    checkout scm
+    sh 'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'	
+    sh 'cd PX4-UBUNTU-tags'
     sh 'export'
     sh 'make distclean; git clean -ff -x -d .'
     sh 'git fetch --tags'
