@@ -618,7 +618,7 @@ void checkoutSCM() {
     sh 'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'	
     sh 'cd PX4-UBUNTU-tags'
     sh 'export'
-    sh 'make distclean; git clean -ff -x -d .'
+   // sh 'make distclean; git clean -ff -x -d .'
     sh 'git fetch --tags'
     sh 'ccache -z'
   }
