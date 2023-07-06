@@ -615,8 +615,11 @@ pipeline {
 
 void checkoutSCM() {
   retry(3) {
-    sh 'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'	
-    
+   // sh 'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'	
+    sh'''export GIT_TRACE_PACKET=1
+export GIT_TRACE=1
+export GIT_CURL_VERBOSE=1
+'''
     sh 'cd PX4-UBUNTU-tags'
     sh 'export'
    // sh 'make distclean; git clean -ff -x -d .'
