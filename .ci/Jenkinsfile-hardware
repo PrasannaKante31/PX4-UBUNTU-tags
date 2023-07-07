@@ -333,7 +333,10 @@ pipeline {
                 cd PX4-UBUNTU-tags		
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
-                ccache -s -v'''
+                ccache -s -v
+		cd ~
+		cd PX4-UBUNTU
+		'''
                 stash includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
               }
               post{
