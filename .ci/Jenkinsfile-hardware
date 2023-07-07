@@ -352,7 +352,7 @@ pipeline {
             } // stage build
              stage("hardware") {
                agent {
-                 label 'px4_fmu-v5'
+                 label 'linux'
                }
                stages {
                  stage("flash") {
