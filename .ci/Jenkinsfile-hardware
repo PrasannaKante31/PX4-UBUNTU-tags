@@ -337,7 +337,7 @@ pipeline {
 		cd ~
 		cd PX4-UBUNTU
 	        cd build
-                	'''
+                cd px4_fmu-v5_debug	'''
                 stash includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
               }
               post{
