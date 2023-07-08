@@ -326,19 +326,15 @@ pipeline {
                 }
               }*/ //try this
               steps {
-              checkoutSCM()
+                checkoutSCM()
 		
 		sh'''
 		
-                cd PX4-UBUNTU-tags		
+		
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
-                ccache -s -v
-		cd ~
-		cd PX4-UBUNTU
-	        cd build
-                cd px4_fmu-v5_debug	'''
-                stash includes: 'build/**/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
+                ccache -s -v'''
+                //stash includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
               }
               post{
 		always{
@@ -350,27 +346,27 @@ pipeline {
 		}
               }
             } // stage build
-             stage("hardware") {
-               agent {
-                 label 'linux'
-               }
-               stages {
-                 stage("flash") {
-                   steps {
-                     sh 'export'
+            stage("hardware") {
+              agent {
+                label 'linux'
+              }
+              stages {
+                stage("flash") {
+                  steps {
+                    sh 'export'
                     sh 'find /dev/serial'
-            //         unstash 'px4_fmu-v5_debug'
-                     sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set SYS_AUTOSTART 0" || true'
-                     sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set IMU_GYRO_RATEMAX 200" || true' // limit cpu usage
-                     sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_0_CONFIG 0" || true'       // limit cpu usage
-                     sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_1_CONFIG 0" || true'       // limit cpu usage
-                     sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param save" || true'
-                     sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_debug/px4_fmu-v5_bootloader.elf'
-                     // flash board and watch bootup
-                     sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_debug/px4_fmu-v5_debug.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600 || true'
-                     resetBoard()
-                   }
-                 }
+                   // unstash 'px4_fmu-v5_debug'
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set SYS_AUTOSTART 0" || true'
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set IMU_GYRO_RATEMAX 200" || true' // limit cpu usage
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_0_CONFIG 0" || true'       // limit cpu usage
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_1_CONFIG 0" || true'       // limit cpu usage
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param save" || true'
+                    sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_debug/px4_fmu-v5_bootloader.elf'
+                    // flash board and watch bootup
+                    sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_debug/px4_fmu-v5_debug.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600 || true'
+                    resetBoard()
+                  }
+                }
             //     stage("tests") {
             //       steps {
             //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "top once"'
@@ -606,7 +602,7 @@ pipeline {
     } // stage Hardware Test
   } // stages
   environment {
-    CCACHE_DIR = '/tmp/ccache'
+    CCACHE_DIR = '/usr/lib/ccache'
     CCACHE_NOHASHDIR = 1
     CI = true
   }
@@ -619,15 +615,10 @@ pipeline {
 
 void checkoutSCM() {
   retry(3) {
-   // sh 'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'	
-    sh'''export GIT_TRACE_PACKET=1
-export GIT_TRACE=1
-export GIT_CURL_VERBOSE=1
-'''
-    sh 'cd PX4-UBUNTU-tags'
+    cd 'cd PX4-UBUNTU-tags'
     sh 'export'
-   // sh 'make distclean; git clean -ff -x -d .'
-   // sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
+    sh 'make distclean; git clean -ff -x -d .'
+    sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
     sh 'ccache -z'
   }
 }
