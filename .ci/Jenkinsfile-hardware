@@ -657,7 +657,7 @@ void checkoutSCM() {
   retry(3) {
     sh 'cd PX4-UBUNTU-tags'
     sh 'export'
-    sh 'make distclean; git clean -ff -x -d .'
+ //   sh 'make distclean; git clean -ff -x -d .'
     sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
     sh 'ccache -z'
   }
