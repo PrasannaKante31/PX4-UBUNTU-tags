@@ -322,6 +322,8 @@ pipeline {
                 checkoutSCM()
 		
 		        sh'''
+		cd ~
+		cd /var/run/workspace/checkoutNEW
 		cd PX4-UBUNTU-tags
 		pwd
                 make px4_fmu-v5_debug
