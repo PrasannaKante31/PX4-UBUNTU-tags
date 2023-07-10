@@ -328,44 +328,45 @@ pipeline {
               steps {
                 checkoutSCM()
 		
-		        sh'''
+		sh'''
+		
+		
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
                 ccache -s -v'''
                 //stash includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
               }
               post{
-                  always{
-                      script{
-                          sh'''pwd
-                          cd PX4-UBUNTU-tags
-                          make distclean
-                          '''  
-                      }
-                  }
+		always{
+                script{sh'''pwd
+		     cd PX4-UBUNTU-tags
+		     make distclean
+		  '''  
+		}
+		}
               }
             } // stage build
-   /*         stage("hardware") {
-              agent {
-                label 'linux'
-              }
-              stages {
-                stage("flash") {
-                  steps {
-                    sh 'export'
-                    sh 'find /dev/serial'
-                   // unstash 'px4_fmu-v5_debug'
-                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set SYS_AUTOSTART 0" || true'
-                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set IMU_GYRO_RATEMAX 200" || true' // limit cpu usage
-                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_0_CONFIG 0" || true'       // limit cpu usage
-                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_1_CONFIG 0" || true'       // limit cpu usage
-                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param save" || true'
-                    sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_debug/px4_fmu-v5_bootloader.elf'
-                    // flash board and watch bootup
-                    sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_debug/px4_fmu-v5_debug.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600 || true'
-                    resetBoard()
-                  }
-                }
+            // stage("hardware") {
+            //   agent {
+            //     label 'px4_fmu-v5'
+            //   }
+            //   stages {
+            //     stage("flash") {
+            //       steps {
+            //         sh 'export'
+            //         sh 'find /dev/serial'
+            //         unstash 'px4_fmu-v5_debug'
+            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set SYS_AUTOSTART 0" || true'
+            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set IMU_GYRO_RATEMAX 200" || true' // limit cpu usage
+            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_0_CONFIG 0" || true'       // limit cpu usage
+            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_1_CONFIG 0" || true'       // limit cpu usage
+            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param save" || true'
+            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_debug/px4_fmu-v5_bootloader.elf'
+            //         // flash board and watch bootup
+            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_debug/px4_fmu-v5_debug.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600 || true'
+            //         resetBoard()
+            //       }
+            //     }
             //     stage("tests") {
             //       steps {
             //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "top once"'
@@ -403,14 +404,14 @@ pipeline {
             //         printTopics()
             //       }
             //     }
-               }
+            //   }
             //   post {
             //     always {
             //       sh 'cat /tmp/pyserial_spy_file.txt || true'
             //       sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v5_debug/px4_fmu-v5_debug.elf || true'
             //     }
-              // }
-            }  //stage test  */ 
+            //   }
+            // } // stage test
           }
         }
 
@@ -495,7 +496,7 @@ pipeline {
             //   }
             // } // stage test
           // }
-       //  }
+      //  }
 
         // stage("px4_fmu-v5_test") {
         //   stages {
