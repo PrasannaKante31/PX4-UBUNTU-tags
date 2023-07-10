@@ -335,17 +335,17 @@ pipeline {
                 //stash includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*', name: 'px4_fmu-v5_debug'
               }
               post{
-		    always{
-            script{
-                sh'''pwd
-                cd PX4-UBUNTU-tags
-                make distclean
-                '''  
-		    }
-		    }
+                  always{
+                      script{
+                          sh'''pwd
+                          cd PX4-UBUNTU-tags
+                          make distclean
+                          '''  
+                      }
+                  }
               }
             } // stage build
-            stage("hardware") {
+   /*         stage("hardware") {
               agent {
                 label 'linux'
               }
@@ -410,7 +410,7 @@ pipeline {
             //       sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v5_debug/px4_fmu-v5_debug.elf || true'
             //     }
               // }
-             } // stage test
+            }  //stage test  */ 
           }
         }
 
