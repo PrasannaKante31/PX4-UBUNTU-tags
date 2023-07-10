@@ -321,7 +321,9 @@ pipeline {
               steps {
                 checkoutSCM()
 		
-		        sh'''pwd
+		        sh'''
+		cd PX4-UBUNTU-tags
+		pwd
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
                 ccache -s -v'''
