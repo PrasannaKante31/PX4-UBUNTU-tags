@@ -655,7 +655,8 @@ pipeline {
 
 void checkoutSCM() {
   retry(3) {
-    sh 'cd PX4-UBUNTU-tags'
+    sh 'cd ~'
+    sh 'cd PX4-UBUNTU'
     sh 'export'
  //   sh 'make distclean; git clean -ff -x -d .'
     sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
