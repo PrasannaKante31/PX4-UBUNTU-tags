@@ -321,7 +321,7 @@ pipeline {
               steps {
                 checkoutSCM()
 		
-		        sh'''
+		        sh'''pwd
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
                 ccache -s -v'''
