@@ -661,7 +661,8 @@ pipeline {
 
 void checkoutSCM() {
   retry(3) {
-    sh'cd /var/run/workspace/checkoutNEW'
+sh'cd ~'    
+sh'cd /var/run/workspace/checkoutNEW'
     sh 'cd PX4-UBUNTU-tags'
     sh 'export'
  //   sh 'make distclean; git clean -ff -x -d .'
