@@ -1,96 +1,90 @@
 #!/usr/bin/env groovy
 
 pipeline {
-  agent {
+   agent {
     label 'linux'
   }
-  /*
-  agent {
-    label 'name of that agent'
-  }
-  */
   stages {
     stage('Hardware Test') {
 
       parallel {
 
-        
         // stage("cubepilot_cubeorange_test") {
         //   stages {
-        //     stage("build cubepilot_cubeorange_test") {
-        //       agent {
-        //         docker {
-        //           image 'px4io/px4-dev-nuttx-focal:2021-09-08'
-        //           args '--cpu-shares 512 -e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
-        //         }
-        //       }
-        //       steps {
-        //         checkoutSCM()
-        //         sh 'make cubepilot_cubeorange_bootloader'
-        //         sh 'make cubepilot_cubeorange_test'
-        //         sh 'ccache -s'
-        //         stash includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*, build/cubepilot_cubeorange_test/etc/init.d/airframes/*', name: 'cubepilot_cubeorange_test'
-        //       }
-        //       post {
-        //         always {
-        //           sh 'make distclean; git clean -ff -x -d .'
-        //         }
-        //       }
-        //     } // stage build
-        //     stage("hardware") {
-        //       agent {
-        //         label 'cubepilot_cubeorange'
-        //       }
-        //       stages {
-        //         stage("flash") {
-        //           steps {
-        //             sh 'export'
-        //             sh 'find /dev/serial'
-        //             unstash 'cubepilot_cubeorange_test'
-        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/cubepilot_cubeorange_bootloader/cubepilot_cubeorange_bootloader.elf'
-        //             // flash board and watch bootup
-        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/cubepilot_cubeorange_test/cubepilot_cubeorange_test.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
-        //             resetBoard()
-        //           }
-        //         }
-        //         stage("tests") {
-        //           steps {
-        //             // run tests
-        //             runTests()
+            // stage("build cubepilot_cubeorange_test") {
+            //   agent {
+            //     docker {
+            //       image 'px4io/px4-dev-nuttx-focal:2021-09-08'
+            //       args '--cpu-shares 512 -e CCACHE_BASEDIR=$WORKSPACE -v ${CCACHE_DIR}:${CCACHE_DIR}:rw'
+            //     }
+            //   }
+            //   steps {
+            //     checkoutSCM()
+            //     sh 'make cubepilot_cubeorange_bootloader'
+            //     sh 'make cubepilot_cubeorange_test'
+            //     sh 'ccache -s'
+            //     stash includes: 'build/*/*.elf, platforms/nuttx/Debug/*, platforms/nuttx/NuttX/nuttx/tools/nuttx-gdbinit, Tools/HIL/*, build/cubepilot_cubeorange_test/etc/init.d/airframes/*', name: 'cubepilot_cubeorange_test'
+            //   }
+            //   post {
+            //     always {
+            //       sh 'make distclean; git clean -ff -x -d .'
+            //     }
+            //   }
+            // } // stage build
+            // stage("hardware") {
+            //   agent {
+            //     label 'cubepilot_cubeorange'
+            //   }
+            //   stages {
+            //     stage("flash") {
+            //       steps {
+            //         sh 'export'
+            //         sh 'find /dev/serial'
+            //         unstash 'cubepilot_cubeorange_test'
+            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/cubepilot_cubeorange_bootloader/cubepilot_cubeorange_bootloader.elf'
+            //         // flash board and watch bootup
+            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/cubepilot_cubeorange_test/cubepilot_cubeorange_test.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
+            //         resetBoard()
+            //       }
+            //     }
+            //     stage("tests") {
+            //       steps {
+            //         // run tests
+            //         runTests()
 
-        //             // load all airframes
-        //             // sh("./Tools/HIL/test_airframes.sh `find /dev/serial -name *usb-*` `cd build/cubepilot_cubeorange_test/etc/init.d/airframes/; find . -regex '.*/[0-9].*' -exec basename {} \\; | cut -d '_' -f 1` || true") // test loading all airframes\
-        //           }
-        //         }
-        //         stage("status") {
-        //           steps {
-        //             // configure
-        //             resetParameters()
-        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "IMU_GYRO_RATEMAX" --value "2000"'
-        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_AUTOSTART" --value "13000"'   // generic vtol standard
-        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_BL_UPDATE" --value "1"'       // update bootloader
-        //             sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
+            //         // load all airframes
+            //         // sh("./Tools/HIL/test_airframes.sh `find /dev/serial -name *usb-*` `cd build/cubepilot_cubeorange_test/etc/init.d/airframes/; find . -regex '.*/[0-9].*' -exec basename {} \\; | cut -d '_' -f 1` || true") // test loading all airframes\
+            //       }
+            //     }
+            //     stage("status") {
+            //       steps {
+            //         // configure
+            //         resetParameters()
+            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "IMU_GYRO_RATEMAX" --value "2000"'
+            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_AUTOSTART" --value "13000"'   // generic vtol standard
+            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_BL_UPDATE" --value "1"'       // update bootloader
+            //         sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
 
-        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger on"' // run logger
-        //             checkStatus()
-        //             quickCalibrate()
-        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "px4io status"'
-        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger off"' // stop logger
-        //           }
-        //         }
-        //         stage("print topics") {
-        //           steps {
-        //             printTopics()
-        //           }
-        //         }
-        //       }
-        //       post {
-        //         always {
-        //           sh 'cat /tmp/pyserial_spy_file.txt || true'
-        //           sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/cubepilot_cubeorange_test/cubepilot_cubeorange_test.elf || true'
-        //         }
-        //       }
-        //     } // stage test
+            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger on"' // run logger
+            //         checkStatus()
+            //         quickCalibrate()
+            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "px4io status"'
+            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger off"' // stop logger
+            //       }
+            //     }
+            //     stage("print topics") {
+            //       steps {
+            //         printTopics()
+            //       }
+            //     }
+            //   }
+            //   post {
+            //     always {
+            //       sh 'cat /tmp/pyserial_spy_file.txt || true'
+            //       sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/cubepilot_cubeorange_test/cubepilot_cubeorange_test.elf || true'
+            //     }
+            //   }
+            // } // stage test
         //   }
         // }
 
@@ -116,55 +110,55 @@ pipeline {
         //         }
         //       }
         //     } // stage build
-            // stage("hardware") {
-            //   agent {
-            //     label 'cuav_x7pro'
-            //   }
-            //   stages {
-            //     stage("flash") {
-            //       steps {
-            //         sh 'export'
-            //         sh 'find /dev/serial'
-            //         unstash 'cuav_x7pro_test'
-            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/cuav_x7pro_bootloader/cuav_x7pro_bootloader.elf'
-            //         // flash board and watch bootup
-            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/cuav_x7pro_test/cuav_x7pro_test.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
-            //         resetBoard()
-            //       }
-            //     }
-            //     stage("tests") {
-            //       steps {
-            //         runTests()
-            //       }
-            //     }
-            //     stage("status") {
-            //       steps {
-            //         // configure
-            //         resetParameters()
-            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "IMU_GYRO_RATEMAX" --value "2000"'
-            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_AUTOSTART" --value "13000"'   // generic vtol standard
-            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_BL_UPDATE" --value "1"'       // update bootloader
-            //         sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
+        //     stage("hardware") {
+        //       agent {
+        //         label 'cuav_x7pro'
+        //       }
+        //       stages {
+        //         stage("flash") {
+        //           steps {
+        //             sh 'export'
+        //             sh 'find /dev/serial'
+        //             unstash 'cuav_x7pro_test'
+        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/cuav_x7pro_bootloader/cuav_x7pro_bootloader.elf'
+        //             // flash board and watch bootup
+        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/cuav_x7pro_test/cuav_x7pro_test.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
+        //             resetBoard()
+        //           }
+        //         }
+        //         stage("tests") {
+        //           steps {
+        //             runTests()
+        //           }
+        //         }
+        //         stage("status") {
+        //           steps {
+        //             // configure
+        //             resetParameters()
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "IMU_GYRO_RATEMAX" --value "2000"'
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_AUTOSTART" --value "13000"'   // generic vtol standard
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_BL_UPDATE" --value "1"'       // update bootloader
+        //             sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
 
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger on"' // run logger
-            //         checkStatus()
-            //         quickCalibrate()
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger off"' // stop logger
-            //       }
-            //     }
-            //     stage("print topics") {
-            //       steps {
-            //         printTopics()
-            //       }
-            //     }
-            //   }
-            //   post {
-            //     always {
-            //       sh 'cat /tmp/pyserial_spy_file.txt || true'
-            //       sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/cuav_x7pro_test/cuav_x7pro_test.elf || true'
-            //     }
-            //   }
-            // } // stage test
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger on"' // run logger
+        //             checkStatus()
+        //             quickCalibrate()
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger off"' // stop logger
+        //           }
+        //         }
+        //         stage("print topics") {
+        //           steps {
+        //             printTopics()
+        //           }
+        //         }
+        //       }
+        //       post {
+        //         always {
+        //           sh 'cat /tmp/pyserial_spy_file.txt || true'
+        //           sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/cuav_x7pro_test/cuav_x7pro_test.elf || true'
+        //         }
+        //       }
+        //     } // stage test
         //   }
         // }
 
@@ -190,54 +184,54 @@ pipeline {
         //         }
         //       }
         //     } // stage build
-            // stage("hardware") {
-            //   agent {
-            //     label 'px4_fmu-v4'
-            //   }
-            //   stages {
-            //     stage("flash") {
-            //       steps {
-            //         sh 'export'
-            //         sh 'find /dev/serial'
-            //         unstash 'px4_fmu-v4_test'
-            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v4_test/px4_fmu-v4_bootloader.elf'
-            //         // flash board and watch bootup
-            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v4_test/px4_fmu-v4_test.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
-            //         resetBoard()
-            //       }
-            //     }
-            //     stage("tests") {
-            //       steps {
-            //         runTests()
-            //       }
-            //     }
-            //     stage("status") {
-            //       steps {
-            //         // configure
-            //         resetParameters()
-            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_AUTOSTART" --value "4001"'    // generic quadcopter
-            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_BL_UPDATE" --value "1"'       // update bootloader
-            //         sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
+        //     stage("hardware") {
+        //       agent {
+        //         label 'px4_fmu-v4'
+        //       }
+        //       stages {
+        //         stage("flash") {
+        //           steps {
+        //             sh 'export'
+        //             sh 'find /dev/serial'
+        //             unstash 'px4_fmu-v4_test'
+        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v4_test/px4_fmu-v4_bootloader.elf'
+        //             // flash board and watch bootup
+        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v4_test/px4_fmu-v4_test.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
+        //             resetBoard()
+        //           }
+        //         }
+        //         stage("tests") {
+        //           steps {
+        //             runTests()
+        //           }
+        //         }
+        //         stage("status") {
+        //           steps {
+        //             // configure
+        //             resetParameters()
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_AUTOSTART" --value "4001"'    // generic quadcopter
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_BL_UPDATE" --value "1"'       // update bootloader
+        //             sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
 
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger on"' // run logger
-            //         checkStatus()
-            //         quickCalibrate()
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger off"' // stop logger
-            //       }
-            //     }
-            //     stage("print topics") {
-            //       steps {
-            //         printTopics()
-            //       }
-            //     }
-            //   }
-            //   post {
-            //     always {
-            //       sh 'cat /tmp/pyserial_spy_file.txt || true'
-            //       sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v4_test/px4_fmu-v4_test.elf || true'
-            //     }
-            //   }
-        //      } // stage test
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger on"' // run logger
+        //             checkStatus()
+        //             quickCalibrate()
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger off"' // stop logger
+        //           }
+        //         }
+        //         stage("print topics") {
+        //           steps {
+        //             printTopics()
+        //           }
+        //         }
+        //       }
+        //       post {
+        //         always {
+        //           sh 'cat /tmp/pyserial_spy_file.txt || true'
+        //           sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v4_test/px4_fmu-v4_test.elf || true'
+        //         }
+        //       }
+        //     } // stage test
         //   }
         // }
 
@@ -263,56 +257,55 @@ pipeline {
         //         }
         //       }
         //     } // stage build
-            // stage("hardware") {
-            //   agent {
-            //     label 'px4_fmu-v4pro'
-            //   }
-            //   stages {
-            //     stage("flash") {
-            //       steps {
-            //         sh 'export'
-            //         sh 'find /dev/serial'
-            //         unstash 'px4_fmu-v4pro_test'
-            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v4pro_test/px4_fmu-v4pro_bootloader.elf'
-            //         // flash board and watch bootup
-            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v4pro_test/px4_fmu-v4pro_test.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
-            //         resetBoard()
-            //       }
-            //     }
-            //     stage("tests") {
-            //       steps {
-            //         runTests()
-            //       }
-            //     }
-            //     stage("status") {
-            //       steps {
-            //         // configure
-            //         resetParameters()
-            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_AUTOSTART" --value "13000"'   // generic vtol standard
-            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_BL_UPDATE" --value "1"'       // update bootloader
-            //         sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
+        //     stage("hardware") {
+        //       agent {
+        //         label 'px4_fmu-v4pro'
+        //       }
+        //       stages {
+        //         stage("flash") {
+        //           steps {
+        //             sh 'export'
+        //             sh 'find /dev/serial'
+        //             unstash 'px4_fmu-v4pro_test'
+        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v4pro_test/px4_fmu-v4pro_bootloader.elf'
+        //             // flash board and watch bootup
+        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v4pro_test/px4_fmu-v4pro_test.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
+        //             resetBoard()
+        //           }
+        //         }
+        //         stage("tests") {
+        //           steps {
+        //             runTests()
+        //           }
+        //         }
+        //         stage("status") {
+        //           steps {
+        //             // configure
+        //             resetParameters()
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_AUTOSTART" --value "13000"'   // generic vtol standard
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_BL_UPDATE" --value "1"'       // update bootloader
+        //             sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
 
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger on"' // run logger
-            //         checkStatus()
-            //         quickCalibrate()
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "px4io status"'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger off"' // stop logger
-            //       }
-            //     }
-            //     stage("print topics") {
-            //       steps {
-            //         printTopics()
-            //       }
-            //     }
-            //   }
-            //insted of "//" use "/*       */" okaiyt will help to comment n number of lines
-            //   post {
-            //     always {
-            //       sh 'cat /tmp/pyserial_spy_file.txt || true'
-            //       sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v4pro_test/px4_fmu-v4pro_test.elf || true'
-            //     }
-            //   }
-            // } // stage test
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger on"' // run logger
+        //             checkStatus()
+        //             quickCalibrate()
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "px4io status"'
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger off"' // stop logger
+        //           }
+        //         }
+        //         stage("print topics") {
+        //           steps {
+        //             printTopics()
+        //           }
+        //         }
+        //       }
+        //       post {
+        //         always {
+        //           sh 'cat /tmp/pyserial_spy_file.txt || true'
+        //           sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v4pro_test/px4_fmu-v4pro_test.elf || true'
+        //         }
+        //       }
+        //     } // stage test
         //   }
         // }
 
@@ -328,7 +321,7 @@ pipeline {
               steps {
                 checkoutSCM()
 		
-		          sh'''
+		        sh'''
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
                 ccache -s -v'''
@@ -345,7 +338,7 @@ pipeline {
                   }
               }
             } // stage build
-   /*         stage("hardware") {
+            stage("hardware") {
               agent {
                 label 'linux'
               }
@@ -354,7 +347,7 @@ pipeline {
                   steps {
                     sh 'export'
                     sh 'find /dev/serial'
-                   // unstash 'px4_fmu-v5_debug'
+                    //unstash 'px4_fmu-v5_debug'
                     sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set SYS_AUTOSTART 0" || true'
                     sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set IMU_GYRO_RATEMAX 200" || true' // limit cpu usage
                     sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_0_CONFIG 0" || true'       // limit cpu usage
@@ -366,51 +359,51 @@ pipeline {
                     resetBoard()
                   }
                 }
-            //     stage("tests") {
-            //       steps {
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "top once"'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "uorb top -1"'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "work_queue status"'
+                stage("tests") {
+                  steps {
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "top once"'
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "uorb top -1"'
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "work_queue status"'
 
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "sd_bench"'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "sd_bench -v"'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "sd_bench -u -v" || true'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "sd_stress"'
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "sd_bench"'
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "sd_bench -v"'
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "sd_bench -u -v" || true'
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "sd_stress"'
 
-            //         // test dataman
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "tests dataman"'
+                    // test dataman
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "tests dataman"'
 
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "tests file" || true'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "uorb_tests"'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "uorb_tests latency_test" || true'
-            //       }
-            //     }
-            //     stage("status") {
-            //       steps {
-            //         // configure
-            //         resetParameters()
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set SYS_AUTOSTART 4001" || true'   // generic quadcopter
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set IMU_GYRO_RATEMAX 200" || true' // limit cpu usage
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_0_CONFIG 0" || true'       // limit cpu usage
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_1_CONFIG 0" || true'       // limit cpu usage
-            //         sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
-            //         checkStatus()
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "px4io status" || true'
-            //       }
-            //     }
-            //     stage("print topics") {
-            //       steps {
-            //         printTopics()
-            //       }
-            //     }
-               }
-            //   post {
-            //     always {
-            //       sh 'cat /tmp/pyserial_spy_file.txt || true'
-            //       sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v5_debug/px4_fmu-v5_debug.elf || true'
-            //     }
-              // }
-            }  //stage test  */ 
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "tests file" || true'
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "uorb_tests"'
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "uorb_tests latency_test" || true'
+                  }
+                }
+                stage("status") {
+                  steps {
+                    // configure
+                    resetParameters()
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set SYS_AUTOSTART 4001" || true'   // generic quadcopter
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set IMU_GYRO_RATEMAX 200" || true' // limit cpu usage
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_0_CONFIG 0" || true'       // limit cpu usage
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_1_CONFIG 0" || true'       // limit cpu usage
+                    sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
+                    checkStatus()
+                    sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "px4io status" || true'
+                  }
+                }
+                stage("print topics") {
+                  steps {
+                    printTopics()
+                  }
+                }
+              }
+              post {
+                always {
+                  sh 'cat /tmp/pyserial_spy_file.txt || true'
+                  sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v5_debug/px4_fmu-v5_debug.elf || true'
+                }
+              }
+            } // stage test
           }
         }
 
@@ -436,66 +429,66 @@ pipeline {
         //         }
         //       }
         //     } // stage build
-            // stage("hardware") {
-            //   agent {
-            //     label 'px4_fmu-v5'
-            //   }
-            //   stages {
-            //     stage("flash") {
-            //       steps {
-            //         sh 'export'
-            //         sh 'find /dev/serial'
-            //         unstash 'px4_fmu-v5_stackcheck'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set SYS_AUTOSTART 0" || true'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set IMU_GYRO_RATEMAX 200" || true' // limit cpu usage
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_0_CONFIG 0" || true'       // limit cpu usage
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_1_CONFIG 0" || true'       // limit cpu usage
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param save" || true'
-            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_stackcheck/px4_fmu-v5_bootloader.elf'
-            //         // flash board and watch bootup
-            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_stackcheck/px4_fmu-v5_stackcheck.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
-            //         resetBoard()
-            //       }
-            //     }
-            //     stage("tests") {
-            //       steps {
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "top once"'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "work_queue status"'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "uorb_tests"'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "uorb_tests latency_test" || true'
+        //     stage("hardware") {
+        //       agent {
+        //         label 'px4_fmu-v5'
+        //       }
+        //       stages {
+        //         stage("flash") {
+        //           steps {
+        //             sh 'export'
+        //             sh 'find /dev/serial'
+        //             unstash 'px4_fmu-v5_stackcheck'
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set SYS_AUTOSTART 0" || true'
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set IMU_GYRO_RATEMAX 200" || true' // limit cpu usage
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_0_CONFIG 0" || true'       // limit cpu usage
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_1_CONFIG 0" || true'       // limit cpu usage
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param save" || true'
+        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_stackcheck/px4_fmu-v5_bootloader.elf'
+        //             // flash board and watch bootup
+        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_stackcheck/px4_fmu-v5_stackcheck.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
+        //             resetBoard()
+        //           }
+        //         }
+        //         stage("tests") {
+        //           steps {
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "top once"'
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "work_queue status"'
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "uorb_tests"'
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "uorb_tests latency_test" || true'
 
-            //         // test dataman
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "tests dataman"'
-            //       }
-            //     }
-            //     stage("status") {
-            //       steps {
-            //         // configure
-            //         resetParameters()
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set SYS_AUTOSTART 4001" || true'   // generic quadcopter
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set IMU_GYRO_RATEMAX 200" || true' // limit cpu usage
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_0_CONFIG 0" || true'       // limit cpu usage
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_1_CONFIG 0" || true'       // limit cpu usage
-            //         sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
-            //         checkStatus()
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "px4io status" || true'
-            //       }
-            //     }
-            //     stage("print topics") {
-            //       steps {
-            //         printTopics()
-            //       }
-            //     }
-            //   }
-            //   post {
-            //     always {
-            //       sh 'cat /tmp/pyserial_spy_file.txt || true'
-            //       sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v5_stackcheck/px4_fmu-v5_stackcheck.elf || true'
-            //     }
-            //   }
-            // } // stage test
-          // }
-       //  }
+        //             // test dataman
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "tests dataman"'
+        //           }
+        //         }
+        //         stage("status") {
+        //           steps {
+        //             // configure
+        //             resetParameters()
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set SYS_AUTOSTART 4001" || true'   // generic quadcopter
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set IMU_GYRO_RATEMAX 200" || true' // limit cpu usage
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_0_CONFIG 0" || true'       // limit cpu usage
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "param set MAV_1_CONFIG 0" || true'       // limit cpu usage
+        //             sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
+        //             checkStatus()
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "px4io status" || true'
+        //           }
+        //         }
+        //         stage("print topics") {
+        //           steps {
+        //             printTopics()
+        //           }
+        //         }
+        //       }
+        //       post {
+        //         always {
+        //           sh 'cat /tmp/pyserial_spy_file.txt || true'
+        //           sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v5_stackcheck/px4_fmu-v5_stackcheck.elf || true'
+        //         }
+        //       }
+        //     } // stage test
+        //   }
+        // }
 
         // stage("px4_fmu-v5_test") {
         //   stages {
@@ -519,55 +512,55 @@ pipeline {
         //         }
         //       }
         //     } // stage build
-            // stage("hardware") {
-            //   agent {
-            //     label 'px4_fmu-v5'
-            //   }
-            //   stages {
-            //     stage("flash") {
-            //       steps {
-            //         sh 'export'
-            //         sh 'find /dev/serial'
-            //         unstash 'px4_fmu-v5_test'
-            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_test/px4_fmu-v5_bootloader.elf'
-            //         // flash board and watch bootup
-            //         sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_test/px4_fmu-v5_test.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
-            //         resetBoard()
-            //       }
-            //     }
-            //     stage("tests") {
-            //       steps {
-            //         runTests()
-            //       }
-            //     }
-            //     stage("status") {
-            //       steps {
-            //         // configure
-            //         resetParameters()
-            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_AUTOSTART" --value "4001"'    // generic quadcopter
-            //         sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_BL_UPDATE" --value "1"'       // update bootloader
-            //         sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
+        //     stage("hardware") {
+        //       agent {
+        //         label 'px4_fmu-v5'
+        //       }
+        //       stages {
+        //         stage("flash") {
+        //           steps {
+        //             sh 'export'
+        //             sh 'find /dev/serial'
+        //             unstash 'px4_fmu-v5_test'
+        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_test/px4_fmu-v5_bootloader.elf'
+        //             // flash board and watch bootup
+        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/px4_fmu-v5_test/px4_fmu-v5_test.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
+        //             resetBoard()
+        //           }
+        //         }
+        //         stage("tests") {
+        //           steps {
+        //             runTests()
+        //           }
+        //         }
+        //         stage("status") {
+        //           steps {
+        //             // configure
+        //             resetParameters()
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_AUTOSTART" --value "4001"'    // generic quadcopter
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_BL_UPDATE" --value "1"'       // update bootloader
+        //             sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
 
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger on"' // run logger
-            //         checkStatus()
-            //         quickCalibrate()
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "px4io status" || true'
-            //         sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger off"' // stop logger
-            //       }
-            //     }
-            //     stage("print topics") {
-            //       steps {
-            //         printTopics()
-            //       }
-            //     }
-            //   }
-            //   post {
-            //     always {
-            //       sh 'cat /tmp/pyserial_spy_file.txt || true'
-            //       sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v5_test/px4_fmu-v5_test.elf || true'
-            //     }
-            //   }
-            // } // stage test
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger on"' // run logger
+        //             checkStatus()
+        //             quickCalibrate()
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "px4io status" || true'
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger off"' // stop logger
+        //           }
+        //         }
+        //         stage("print topics") {
+        //           steps {
+        //             printTopics()
+        //           }
+        //         }
+        //       }
+        //       post {
+        //         always {
+        //           sh 'cat /tmp/pyserial_spy_file.txt || true'
+        //           sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/px4_fmu-v5_test/px4_fmu-v5_test.elf || true'
+        //         }
+        //       }
+        //     } // stage test
         //   }
         // }
 
@@ -593,7 +586,55 @@ pipeline {
         //         }
         //       }
         //     } // stage build
-            
+        //     stage("hardware") {
+        //       agent {
+        //         label 'nxp_fmuk66-v3'
+        //       }
+        //       stages {
+        //         stage("flash") {
+        //           steps {
+        //             sh 'export'
+        //             sh 'find /dev/serial'
+        //             unstash 'nxp_fmuk66-v3_test'
+        //             //sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/nxp_fmuk66-v3_test/nxp_fmuk66-v3_bootloader.elf'
+        //             // flash board and watch bootup
+        //             sh './platforms/nuttx/Debug/upload_jlink_gdb.sh build/nxp_fmuk66-v3_test/nxp_fmuk66-v3_test.elf && ./Tools/HIL/monitor_firmware_upload.py --device `find /dev/serial -name *usb-*` --baudrate 57600'
+        //             resetBoard()
+        //           }
+        //         }
+        //         stage("tests") {
+        //           steps {
+        //             runTests()
+        //           }
+        //         }
+        //         stage("status") {
+        //           steps {
+        //             // configure
+        //             resetParameters()
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "IMU_GYRO_RATEMAX" --value "400"'
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_AUTOSTART" --value "4001"'    // generic quadcopter
+        //             sh './Tools/HIL/nsh_param_set.py --device `find /dev/serial -name *usb-*` --name "SYS_BL_UPDATE" --value "1"'       // update bootloader
+        //             sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
+
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger on"' // run logger
+        //             checkStatus()
+        //             quickCalibrate()
+        //             sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "logger off"' // stop logger
+        //           }
+        //         }
+        //         stage("print topics") {
+        //           steps {
+        //             printTopics()
+        //           }
+        //         }
+        //       }
+        //       post {
+        //         always {
+        //           sh 'cat /tmp/pyserial_spy_file.txt || true'
+        //           sh './platforms/nuttx/Debug/jlink_gdb_backtrace_simple.sh build/nxp_fmuk66-v3_test/nxp_fmuk66-v3_test.elf || true'
+        //         }
+        //       }
+        //     } // stage test
         //   }
         // }
 
@@ -601,7 +642,7 @@ pipeline {
     } // stage Hardware Test
   } // stages
   environment {
-    CCACHE_DIR = '/usr/lib/ccache'
+    CCACHE_DIR = '/tmp/ccache'
     CCACHE_NOHASHDIR = 1
     CI = true
   }
@@ -870,4 +911,3 @@ void resetBoard() {
   sh './Tools/HIL/run_nsh_cmd.py --device `find /dev/serial -name *usb-*` --cmd "echo > /fs/microsd/.format" || true'
   sh './Tools/HIL/reboot.py --device `find /dev/serial -name *usb-*`' // reboot to apply
 }
-
