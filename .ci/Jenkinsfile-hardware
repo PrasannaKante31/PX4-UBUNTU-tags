@@ -321,11 +321,10 @@ pipeline {
               steps {
                 checkoutSCM()
 		
-		        sh'''
-		cd ~
-		cd /var/run/workspace/checkoutNEW
-		cd PX4-UBUNTU-tags
-		pwd
+		sh'''
+		if (pwd!=/var/run/checkoutNEW/PX4-UBUNTU-tags){
+		cd PX4-UBUNTU-tags}
+		
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
                 ccache -s -v'''
@@ -334,10 +333,12 @@ pipeline {
               post{
                   always{
                       script{
-                          sh'''pwd
-			  cd ~
-			  cd /var/run/workspace/checkoutNEW
+                          sh'''
+		          echo 'this is post script pwd before cd to the cwd'
+			  pwd
                           cd PX4-UBUNTU-tags
+			  echo 'this is cwd'
+			  pwd
                           make distclean
                           '''  
                       }
@@ -661,12 +662,14 @@ pipeline {
 
 void checkoutSCM() {
   retry(3) {
-sh'cd ~'    
-sh'cd /var/run/workspace/checkoutNEW'
+	sh'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
+   
+        
     sh 'cd PX4-UBUNTU-tags'
+    sh'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
     sh 'export'
- //   sh 'make distclean; git clean -ff -x -d .'
-    //sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
+    sh 'make distclean; git clean -ff -x -d .'
+   
     sh 'ccache -z'
   }
 }
