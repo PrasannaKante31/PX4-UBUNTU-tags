@@ -320,7 +320,7 @@ pipeline {
               }*/ //try this
               steps {
                 checkoutSCM()
-		
+		sh'cd PX4-UBUNTU-tags'
 		sh'''		
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
@@ -658,10 +658,11 @@ pipeline {
 }
 
 void checkoutSCM() {
-  retry(3) { 
-    sh 'cd PX4-UBUNTU-tags'
+  retry(3) {
+     
+    sh 'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
     sh 'export'
-    sh'cd PX4-UBUNTU-tags'
+    sh 'cd PX4-UBUNTU'
     sh 'pwd'
     sh 'make distclean; git clean -ff -x -d .'
    
