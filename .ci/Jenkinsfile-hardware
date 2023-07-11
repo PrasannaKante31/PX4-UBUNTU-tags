@@ -661,6 +661,7 @@ void checkoutSCM() {
   retry(3) { 
     sh 'cd PX4-UBUNTU-tags'
     sh 'export'
+    sh'cd PX4-UBUNTU-tags'
     sh 'pwd'
     sh 'make distclean; git clean -ff -x -d .'
    
