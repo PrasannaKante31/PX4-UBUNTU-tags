@@ -322,9 +322,7 @@ pipeline {
                 checkoutSCM()
 		
 		sh'''
-		if (pwd!=/var/run/checkoutNEW/PX4-UBUNTU-tags){
-		cd PX4-UBUNTU-tags}
-		
+		cd PX4-UBUNTU-tags		
                 make px4_fmu-v5_debug
                 make px4_fmu-v5_debug bootloader_elf
                 ccache -s -v'''
@@ -662,11 +660,8 @@ pipeline {
 
 void checkoutSCM() {
   retry(3) {
-	sh'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
-   
-        
+    sh 'cd checkoutNEW@2' 
     sh 'cd PX4-UBUNTU-tags'
-    sh'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
     sh 'export'
     sh 'make distclean; git clean -ff -x -d .'
    
