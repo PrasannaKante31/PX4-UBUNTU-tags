@@ -662,7 +662,7 @@ void checkoutSCM() {
      
     sh 'git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
     sh 'export'
-    sh 'cd PX4-UBUNTU'
+    sh 'cd PX4-UBUNTU-tags'
     sh 'pwd'
     sh 'make distclean; git clean -ff -x -d .'
    
