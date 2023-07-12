@@ -659,9 +659,9 @@ pipeline {
 
 void checkoutSCM() {
   retry(3) {
-  sh''' if (PX4-UBUNTU-tags.isDirectory() && PX4-UBUNTU-tags.list().length > 0){   
-   git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git}
-''' sh 'export'
+ 
+ sh'  git clone https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
+ sh 'export'
     sh 'cd PX4-UBUNTU-tags'
     sh 'pwd'
     sh 'make distclean; git clean -ff -x -d .'
