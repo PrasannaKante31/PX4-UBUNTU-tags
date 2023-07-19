@@ -15,28 +15,7 @@ pipeline {
             docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
           }
 
-
-
-
-
-
-
-
-
           steps {
-
-sh '''
-
-git --version
-docker --version
-'''
-
-
-
-
-
-
-
            // sh 'make distclean; git clean -ff -x -d .'
             sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
             sh 'make airframe_metadata'
