@@ -2,6 +2,15 @@
 
 pipeline {
   agent none
+  node {
+    checkout([
+        $class: 'GitSCM',
+        branches: main,
+        doGenerateSubmoduleConfigurations: true,
+        extensions: scm.extensions + [[$class: 'SubmoduleOption', parentCredentials: true]],
+        userRemoteConfigs: scm.userRemoteConfigs
+    ])
+}
   stages {
 
     stage('Analysis') {
