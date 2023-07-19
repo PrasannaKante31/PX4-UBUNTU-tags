@@ -2,25 +2,27 @@
 
 pipeline {
   agent none
-  node {
-    checkout([
-        $class: 'GitSCM',
-        branches: main,
-        doGenerateSubmoduleConfigurations: true,
-        extensions: scm.extensions + [[$class: 'SubmoduleOption', parentCredentials: true]],
-        userRemoteConfigs: scm.userRemoteConfigs
-    ])
-}
+ 
   stages {
 
     stage('Analysis') {
       
       parallel {
-
+	
         stage('Airframe') {
+		
           agent {
             docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
           }
+	node {
+    checkout([
+        $class: 'GitSCM',
+        branches: scm.branches,
+        doGenerateSubmoduleConfigurations: true,
+        extensions: scm.extensions + [[$class: 'SubmoduleOption', parentCredentials: true]],
+        userRemoteConfigs: scm.userRemoteConfigs
+    ])
+      }
           steps {
            // sh 'make distclean; git clean -ff -x -d .'
             sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
