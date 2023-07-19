@@ -24,15 +24,15 @@ pipeline {
 
 
           steps {
-node {
-    checkout([
-        $class: 'GitSCM',
-        branches: scm.branches,
-        doGenerateSubmoduleConfigurations: true,
-        extensions: scm.extensions + [[$class: 'SubmoduleOption', parentCredentials: true]],
-        userRemoteConfigs: scm.userRemoteConfigs
-    ])
-}
+
+
+
+
+
+
+
+
+
            // sh 'make distclean; git clean -ff -x -d .'
             sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
             sh 'make airframe_metadata'
