@@ -1,11 +1,9 @@
 
 
 pipeline {
-  agent {
-label 'linux'
-}
- 
-  stages {
+ agent none 
+
+stages {
 
     stage('Analysis') {
       
@@ -13,9 +11,9 @@ label 'linux'
 	
         stage('Airframe') {
 		
-      //    agent {
-        //    docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
-         // }
+        agent {
+        docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
+     }
 
           steps {
            // sh 'make distclean; git clean -ff -x -d .'
