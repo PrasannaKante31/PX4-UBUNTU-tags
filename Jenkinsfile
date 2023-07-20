@@ -20,6 +20,7 @@ stages {
 sh 'pwd'
 sh 'exit'
 sh 'cd'
+sh 'pwd'
 sh'cd PrasannaKante'
 sh 'cd PX-UBUNTU-tags'
 sh 'git fetch --tags https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
