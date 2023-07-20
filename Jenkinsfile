@@ -10,11 +10,11 @@ agent {
 
 stages {
 
-/*    stage('Analysis') {
+    stage('Analysis') {
       
       parallel {
 
-	stage('checkout'){
+/*	stage('checkout'){
 		steps{
 			script {
 
@@ -34,7 +34,7 @@ stages {
 		}
 	
 
-*///	}
+	} */
 
         stage('Airframe') {
 		
