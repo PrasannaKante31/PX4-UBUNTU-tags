@@ -13,17 +13,25 @@ stages {
     stage('Analysis') {
       
       parallel {
-	stage('checkout') {
+
+	stage('checkout'){
 		steps{
+			script {
 
-			script{
 			deleteDir()
+			checkout([
+				branches: [[name: 'main']],
+				doGenerateSuboduleConfigurations: false,
+				extentions: [],
+				submoduleCfg: [],
+		             userRemoteConfigs: [[url: 'https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git']]
+			])
+  			
+			sh 'git submodule update --init --recursive'
+			}
 
-			git url: 'https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git',
-			branch: 'main',
-			recursive:true
-			}	
-		}	
+		}
+	
 
 	}
 
