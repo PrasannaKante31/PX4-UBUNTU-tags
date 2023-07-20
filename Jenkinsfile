@@ -1,7 +1,9 @@
 
 
 pipeline {
- agent none 
+ agent {
+label 'linux'
+} 
 
 stages {
 
@@ -11,18 +13,14 @@ stages {
 	
         stage('Airframe') {
 		
-        agent {
-        docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
-     }
+     //   agent {
+       // docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
+    // }
 
           steps {
-           // sh 'make distclean; git clean -ff -x -d .'
-sh 'pwd'
-sh 'git --version'
-sh 'exit'
-sh 'cd'
 sh 'git --version'
 sh 'pwd'
+sh 'cd ~'
 sh'cd PrasannaKante'
 sh 'cd PX-UBUNTU-tags'
 sh 'git fetch --tags https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
