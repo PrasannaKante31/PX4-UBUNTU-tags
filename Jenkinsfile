@@ -286,7 +286,7 @@ stages {
     GIT_COMMITTER_NAME = "PX4BuildBot"
   }
   options {
-    skipDefaultCheckout()
+   // skipDefaultCheckout()
     buildDiscarder(logRotator(numToKeepStr: '20', artifactDaysToKeepStr: '30'))
     timeout(time: 90, unit: 'MINUTES')
   }
