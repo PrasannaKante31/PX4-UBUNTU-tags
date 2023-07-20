@@ -23,7 +23,7 @@ stages {
 				$class: 'GitSCM',
 				branches: [[name: 'main']],
 				doGenerateSuboduleConfigurations: false,
-				extentions: [],
+				extensions: [],
 				submoduleCfg: [],
 		             userRemoteConfigs: [[url: 'https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git']]
 			])
