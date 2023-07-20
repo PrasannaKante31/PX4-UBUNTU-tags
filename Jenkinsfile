@@ -1,7 +1,9 @@
 
 
 pipeline {
-  agent none
+  agent {
+label 'linux'
+}
  
   stages {
 
@@ -11,12 +13,15 @@ pipeline {
 	
         stage('Airframe') {
 		
-          agent {
-            docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
-          }
+      //    agent {
+        //    docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
+         // }
 
           steps {
            // sh 'make distclean; git clean -ff -x -d .'
+sh 'pwd'
+sh 'git clone --recursive https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
+sh 'cd PX4-UBUNTU-tags'
             sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
             sh 'make airframe_metadata'
             dir('build/px4_sitl_default/docs') {
