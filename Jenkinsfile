@@ -10,7 +10,7 @@ agent {
 
 stages {
 
-    stage('Analysis') {
+/*    stage('Analysis') {
       
       parallel {
 
@@ -34,7 +34,7 @@ stages {
 		}
 	
 
-	}
+*/	}
 
         stage('Airframe') {
 		
