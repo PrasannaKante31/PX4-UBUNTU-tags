@@ -20,6 +20,7 @@ stages {
 
 			deleteDir()
 			checkout([
+				$class: 'GitSCM',
 				branches: [[name: 'main']],
 				doGenerateSuboduleConfigurations: false,
 				extentions: [],
