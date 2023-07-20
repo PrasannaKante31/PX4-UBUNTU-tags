@@ -18,8 +18,10 @@ stages {
           steps {
            // sh 'make distclean; git clean -ff -x -d .'
 sh 'pwd'
+sh 'git --version'
 sh 'exit'
 sh 'cd'
+sh 'git --version'
 sh 'pwd'
 sh'cd PrasannaKante'
 sh 'cd PX-UBUNTU-tags'
