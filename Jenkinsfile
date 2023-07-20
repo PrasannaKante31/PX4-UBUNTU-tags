@@ -1,32 +1,39 @@
 
 
 pipeline {
- agent {
-label 'linux'
-} 
+
+
+agent {
+     docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
+     }
+ 
 
 stages {
 
     stage('Analysis') {
       
       parallel {
-	
+	stage('checkout') {
+		steps{
+
+			script{
+			deleteDir()
+
+			git url: 'https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git',
+			branch: 'main',
+			recursive:true
+			}	
+		}	
+
+	}
+
         stage('Airframe') {
 		
-     //   agent {
-       // docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
+//       agent {
+  //   docker { image 'px4io/px4-dev-base-focal:2021-08-18' }
     // }
 
           steps {
-sh 'git --version'
-sh 'pwd'
-sh 'cd ~'
-sh 'pwd'
-sh'cd PrasannaKante'
-sh 'cd PX-UBUNTU-tags'
-sh 'git fetch --tags https://github.com/PrasannaKante31/PX4-UBUNTU-tags.git'
-sh 'git --version'
-
 
             sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
             sh 'make airframe_metadata'
