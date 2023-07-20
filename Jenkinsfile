@@ -44,7 +44,7 @@ stages {
 
           steps {
 
-            sh 'git fetch --tags https://github.com/PX4/PX4-Autopilot.git'
+           
             sh 'make airframe_metadata'
             dir('build/px4_sitl_default/docs') {
               archiveArtifacts(artifacts: 'airframes.md, airframes.xml')
